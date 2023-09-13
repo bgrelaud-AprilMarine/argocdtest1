@@ -1,39 +1,20 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: apache-php-deployment
+  name: guestbook-ui
 spec:
-  replicas: 2 # Le nombre de réplicas que vous souhaitez
+  replicas: 1
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: apache-php
+      app: guestbook-ui
   template:
     metadata:
       labels:
-        app: apache-php
+        app: guestbook-ui
     spec:
       containers:
-        - name: apache-php-container
-          image: php:7.4-apache # Utilisation de l'image Docker PHP avec Apache
-          ports:
-            - containerPort: 80
-          volumeMounts:
-            - name: php-code
-              mountPath: /var/www/html # Emplacement des fichiers PHP
-  volumes:
-    - name: php-code
-      # Vous pouvez utiliser une ressource ConfigMap ou un PersistentVolumeClaim (PVC) pour vos fichiers PHP
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: apache-php-service
-spec:
-  selector:
-    app: apache-php
-  ports:
-    - protocol: TCP
-      port: 80
-  type: LoadBalancer # Utilisez LoadBalancer si vous avez un service Kubernetes qui prend en charge la création de Load Balancer externe
+      - image: gcr.io/heptio-images/ks-guestbook-demo:0.2
+        name: guestbook-ui
+        ports:
+        - containerPort: 80
