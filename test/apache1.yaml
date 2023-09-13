@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: page_statique
+  name: pagestatique
 spec:
   replicas: 1
   revisionHistoryLimit: 3
